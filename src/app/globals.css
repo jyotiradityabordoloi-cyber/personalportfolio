@@ -1,0 +1,350 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Tokens: black & white. Colour is reserved for projects and skills. ── */
+:root,
+.dark {
+  --bg: #050505;
+  --bg-2: #0b0b0b;
+  --card: rgba(255, 255, 255, 0.035);
+  --card-solid: #0e0e0e;
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --fg: #f2f2f2;
+  --muted: #a3a3a3;
+  --faint: #6b6b6b;
+  --accent: #f2f2f2;
+  --accent-2: #b5b5b5;
+  --accent-soft: rgba(255, 255, 255, 0.07);
+  --glow-1: rgba(255, 255, 255, 0.06);
+  --glow-2: rgba(255, 255, 255, 0.04);
+  --glow-3: rgba(255, 255, 255, 0.03);
+  --board: #0e0e0e;
+  --dot: rgba(255, 255, 255, 0.07);
+  --paper: #ebebeb;
+  --ink: #0a0a0a;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-card: var(--card);
+  --color-card-solid: var(--card-solid);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: var(--ff-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--ff-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--ff-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-display: var(--ff-display), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Base ───────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #f2f2f2;
+  color: #050505;
+}
+
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ── Utilities ──────────────────────────────────────────── */
+@utility glass {
+  background: var(--card);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+@utility container-x {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 20px;
+  @media (width >= 768px) {
+    padding-inline: 32px;
+  }
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility dot-grid {
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+@utility hairline-grid {
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Animated gradient blobs in hero */
+@keyframes drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6%, 8%, 0) scale(1.12);
+  }
+}
+@keyframes drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(-8%, -4%, 0) scale(0.95);
+  }
+}
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+@keyframes dash {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.animate-drift-a {
+  animation: drift-a 18s ease-in-out infinite;
+}
+.animate-drift-b {
+  animation: drift-b 22s ease-in-out infinite;
+}
+.animate-float {
+  animation: float-y 6s ease-in-out infinite;
+}
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+.animate-pulse-ring {
+  animation: pulse-ring 1.8s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+.animate-dash {
+  animation: dash 1.2s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-drift-a,
+  .animate-drift-b,
+  .animate-float,
+  .animate-marquee,
+  .animate-pulse-ring,
+  .animate-dash {
+    animation: none;
+  }
+}
+
+/* Gradient text */
+.text-gradient {
+  background: linear-gradient(180deg, #ffffff 20%, #8a8a8a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Code blocks */
+.code-block {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  tab-size: 2;
+}
+.code-block .kw {
+  color: var(--accent);
+}
+.code-block .fn {
+  color: var(--accent-2);
+}
+.code-block .str {
+  color: #e7a35a;
+}
+.code-block .num {
+  color: #e7a35a;
+}
+.code-block .cm {
+  color: var(--faint);
+}
+
+/* Sticker board */
+.sticker {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+.sticker:active {
+  cursor: grabbing;
+}
+.sticker-face,
+.sticker-flap {
+  position: absolute;
+  inset: 0;
+}
+.sticker-flap {
+  transform-origin: 0 0;
+  visibility: hidden;
+}
+
+/* Recharts tweaks */
+.recharts-cartesian-grid line {
+  stroke: var(--line);
+}
+.recharts-text {
+  fill: var(--faint);
+  font-size: 11px;
+}
+.recharts-tooltip-cursor {
+  fill: var(--accent-soft);
+}
+
+@media print {
+  body > header,
+  body > footer,
+  body > a {
+    display: none !important;
+  }
+  :root,
+  .dark {
+    --bg: #fff;
+    --card-solid: #fff;
+    --fg: #111;
+    --muted: #444;
+    --faint: #777;
+    --line: #ddd;
+  }
+}
+
+/* ── Hero artwork: sizes tied to the silhouette width ─────── */
+.hero-art {
+  --sw: min(56vw, 88svh);
+  --fs: calc(var(--sw) * 0.205);
+}
+@media (max-width: 767px) and (orientation: portrait) {
+  .hero-art {
+    --sw: min(150vw, 70svh * 1.48);
+    --fs: 13.4vw;
+  }
+  .hero-art .hero-words {
+    bottom: calc(var(--sw) * 0.6756 * 0.95);
+  }
+}
+.hero-figure {
+  width: var(--sw);
+}
+.hero-words {
+  bottom: calc(var(--sw) * 0.6756 * 0.84);
+  font-size: var(--fs);
+}
+.hero-fade-text {
+  background: linear-gradient(180deg, #0a0a0a 0%, #0a0a0a 22%, rgba(10, 10, 10, 0.1) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Section kicker: "01 — About me" */
+.kicker {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Slow drift on the light-room photograph */
+@keyframes slow-zoom {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.09);
+  }
+}
+.animate-slow-zoom {
+  animation: slow-zoom 24s ease-in-out infinite alternate;
+}
+@keyframes beam {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+.animate-beam {
+  animation: beam 7s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-slow-zoom,
+  .animate-beam {
+    animation: none;
+  }
+}
