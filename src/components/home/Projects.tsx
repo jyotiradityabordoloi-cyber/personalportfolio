@@ -14,6 +14,20 @@ const ease = [0.22, 1, 0.36, 1] as const;
 function WorkCard({ p, index, className }: { p: Project; index: number; className?: string }) {
   const c1 = `hsl(${p.hue} 85% 58%)`;
   const c2 = `hsl(${(p.hue + 35) % 360} 90% 52% / 0.8)`;
+
+  // A dedicated card image already carries the title, so show it clean.
+  if (p.card) {
+    return (
+      <div className={clsx("relative isolate overflow-hidden rounded-2xl border border-white/10 bg-[#0c0c0c] shadow-2xl shadow-black/60", className)}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={p.card} alt="" className="absolute inset-0 h-full w-full object-cover object-left" loading="lazy" />
+        <span className="sr-only">
+          {String(index + 1).padStart(2, "0")} {p.title}, {p.category}
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div
       className={clsx("relative isolate overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-black/60", className)}

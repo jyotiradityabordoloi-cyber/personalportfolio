@@ -29,7 +29,8 @@ export type Project = {
   decisions: { decision: string; why: string; tradeoff: string }[];
   outcomes: Outcome[];
   tools: string[];
-  cover?: string; // thumbnail in /public/images/projects
+  cover?: string; // thumbnail in /public/images/projects (case page)
+  card?: string; // card image on the home Works ring (falls back to cover)
   learning?: string; // the product lesson, shown on the case page
   links?: { live?: string; app?: string; repo?: string };
   note?: string; // small disclaimer under the hero
@@ -53,6 +54,7 @@ export const projects: Project[] = [
     hue: 20,
     year: "[Year]",
     cover: "/images/projects/meetpoint.webp",
+    card: "/images/projects/cards/meetpoint.webp",
     links: {
       live: "https://meetpoint-navy.vercel.app/",
       repo: "https://github.com/jyotiradityabordoloi-cyber/Meetpoint",
@@ -106,6 +108,7 @@ export const projects: Project[] = [
     hue: 280,
     year: "[Year]",
     cover: "/images/projects/supportflow.webp",
+    card: "/images/projects/cards/supportflow.webp",
     links: {
       live: "https://ai-workflow-automation-site.vercel.app",
       app: "https://ai-workflow-automation-rose.vercel.app",
@@ -185,6 +188,7 @@ export const projects: Project[] = [
     hue: 350,
     year: "[Year]",
     cover: "/images/projects/inbox-triage.webp",
+    card: "/images/projects/cards/inbox-triage.webp",
     problem:
       "An inbox mixes leads, support requests, invoices and spam. Sorting them, logging leads and drafting replies by hand is slow, but letting an AI send emails on its own is risky: the cost of a wrong email is high, and the cost of clicking Send is low.",
     role: "Designed and built the n8n workflow: the prompt, structured output, confidence-based routing, Slack approval and the demo test set.",
@@ -274,6 +278,7 @@ export const projects: Project[] = [
     hue: 255,
     year: "[Year]",
     cover: "/images/projects/genai-writing.webp",
+    card: "/images/projects/cards/genai-writing.webp",
     links: {
       repo: "https://github.com/jyotiradityabordoloi-cyber/Genai-ai-writing-assistant",
     },
@@ -362,6 +367,7 @@ export const projects: Project[] = [
     hue: 232,
     year: "[Year]",
     cover: "/images/projects/researchos.webp",
+    card: "/images/projects/cards/researchos.webp",
     links: {
       repo: "https://github.com/jyotiradityabordoloi-cyber/-ResearchOS-AI-Research-Synthesis-Platform",
     },
@@ -483,6 +489,7 @@ export const projects: Project[] = [
     hue: 118,
     year: "[Year]",
     cover: "/images/projects/groupbuy.webp",
+    card: "/images/projects/cards/groupbuy.webp",
     links: {
       live: "https://groupbuyproject.netlify.app/app#/start",
       repo: "https://github.com/jyotiradityabordoloi-cyber/GroupBuy",
@@ -603,6 +610,7 @@ export const projects: Project[] = [
     hue: 158,
     year: "[Year]",
     cover: "/images/projects/fundfacts-v2.webp",
+    card: "/images/projects/cards/fundfacts.webp",
     links: {
       live: "https://fundfacts-ai-ten.vercel.app",
       repo: "https://github.com/jyotiradityabordoloi-cyber/Fundfacts-ai",
