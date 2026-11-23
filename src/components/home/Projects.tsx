@@ -166,22 +166,6 @@ export function Projects() {
                     transition={SPRING}
                   >
                     <WorkCard p={proj} index={i} className="h-full w-full" />
-                    {/* glass caption that materialises (blur + rise) on the focused card */}
-                    <AnimatePresence>
-                      {on && (
-                        <motion.span
-                          key="caption"
-                          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 6, filter: "blur(6px)" }}
-                          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                          exit={reduce ? { opacity: 0 } : { opacity: 0, y: 4, filter: "blur(4px)" }}
-                          transition={SPRING}
-                          className="absolute inset-x-2 bottom-2 flex items-center justify-between rounded-xl border border-white/20 bg-black/55 px-3 py-2 text-[12px] font-medium tracking-[0.01em] text-white backdrop-blur-md backdrop-saturate-150"
-                        >
-                          View case study
-                          <ArrowUpRight className="size-3.5" />
-                        </motion.span>
-                      )}
-                    </AnimatePresence>
                   </MotionLink>
                 </motion.div>
               );
@@ -224,45 +208,12 @@ export function Projects() {
                   >
                     Works &apos;26
                   </h2>
-                  <p className="mt-3 text-[13px] text-faint">Hover a project, or pick one below</p>
+                  <p className="mt-3 text-[13px] text-faint">Hover a project to preview</p>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
         </div>
-
-        {/* desktop: every project in one line, for scanning and keyboard users */}
-        <nav aria-label="All projects" className="mt-2 hidden justify-center lg:flex" onPointerLeave={() => setActive(null)}>
-          <ul className="flex flex-wrap justify-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] p-1.5 backdrop-blur-md">
-            {projects.map((proj, i) => {
-              const on = active === i;
-              return (
-                <li key={proj.slug} className="relative">
-                  {on && (
-                    <motion.span
-                      layoutId="works-pill"
-                      className="absolute inset-0 rounded-full bg-white"
-                      transition={reduce ? { duration: 0 } : SPRING}
-                    />
-                  )}
-                  <Link
-                    href={`/projects/${proj.slug}`}
-                    onPointerEnter={() => setActive(i)}
-                    onFocus={() => setActive(i)}
-                    onBlur={() => setActive(null)}
-                    className={clsx(
-                      "relative z-10 flex items-center gap-2 rounded-full px-3.5 py-2 text-[12.5px] transition-[color,transform] duration-150 active:scale-[0.97]",
-                      on ? "text-black" : "text-muted hover:text-fg",
-                    )}
-                  >
-                    <span className={clsx("font-mono text-[10px] tabular-nums", on ? "text-black/50" : "text-faint")}>{pad(i + 1)}</span>
-                    {proj.title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
 
         {/* below lg: a plain grid */}
         <div className="lg:hidden">
