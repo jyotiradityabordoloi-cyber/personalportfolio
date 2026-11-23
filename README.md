@@ -2,6 +2,8 @@
 
 A black-and-white, motion-rich product portfolio built with Next.js, TypeScript, Tailwind CSS, Framer Motion and Recharts.
 
+**Live:** https://personalportfolio-nine-hazel.vercel.app
+
 ## Run it locally
 
 Requires **Node.js 22+** and **Git**.
