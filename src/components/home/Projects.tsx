@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
-import { AnimatePresence, motion, useSpring } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useSafeReducedMotion } from "@/lib/useSafeReducedMotion";
 import { ArrowUpRight } from "lucide-react";
 import clsx from "clsx";
@@ -61,8 +61,6 @@ function WorkCard({ p, index, className }: { p: Project; index: number; classNam
 // default, so nothing overshoots; motion always starts from the live value.
 const SPRING = { type: "spring", bounce: 0, duration: 0.4 } as const; // response 0.4, damping 1.0
 const ENTER = { type: "spring", bounce: 0, duration: 0.9 } as const;
-// critically damped follow for the pointer tilt (response ≈ 0.6s)
-const TILT_SPRING = { stiffness: 110, damping: 21, mass: 1 };
 
 // cards evenly spaced on an ellipse around the title (works for any count)
 const RX = 374;
@@ -82,25 +80,7 @@ export function Projects() {
   const reduce = useSafeReducedMotion();
   const p = active !== null ? projects[active] : null;
 
-  // The whole ring leans a few degrees toward the pointer: motion that hints
-  // where your attention is going. Springs make it interruptible at any instant.
-  const ringRef = useRef<HTMLDivElement>(null);
-  const tiltX = useSpring(0, TILT_SPRING);
-  const tiltY = useSpring(0, TILT_SPRING);
-
-  const onRingMove = (e: React.PointerEvent) => {
-    if (reduce || e.pointerType !== "mouse" || !ringRef.current) return;
-    const r = ringRef.current.getBoundingClientRect();
-    const nx = (e.clientX - (r.left + r.width / 2)) / r.width; // -0.5 … 0.5
-    const ny = (e.clientY - (r.top + r.height / 2)) / r.height;
-    tiltY.set(nx * 10);
-    tiltX.set(-ny * 8);
-  };
-  const resetRing = () => {
-    tiltX.set(0);
-    tiltY.set(0);
-    setActive(null);
-  };
+  const clear = () => setActive(null);
 
   return (
     <section id="projects" aria-labelledby="projects-title" className="relative overflow-hidden border-t border-line bg-black py-24 md:py-28">
@@ -117,18 +97,13 @@ export function Projects() {
 
         {/* desktop: the ring */}
         <div
-          className="relative mx-auto mt-4 hidden h-[740px] max-w-[1100px] [perspective:1600px] lg:block"
-          onPointerMove={onRingMove}
-          onPointerLeave={resetRing}
+          className="relative mx-auto mt-4 hidden h-[740px] max-w-[1100px] lg:block"
+          onPointerLeave={clear}
           onBlur={(e) => {
-            if (!e.currentTarget.contains(e.relatedTarget as Node)) resetRing();
+            if (!e.currentTarget.contains(e.relatedTarget as Node)) clear();
           }}
         >
-          <motion.div
-            ref={ringRef}
-            className="absolute inset-0 [transform-style:preserve-3d]"
-            style={{ rotateX: tiltX, rotateY: tiltY }}
-          >
+          <div className="absolute inset-0">
             {projects.map((proj, i) => {
               const s = slotFor(i, projects.length);
               const on = active === i;
@@ -136,7 +111,7 @@ export function Projects() {
               return (
                 <motion.div
                   key={proj.slug}
-                  className="absolute h-[170px] w-[260px] [transform-style:preserve-3d]"
+                  className="absolute h-[170px] w-[260px]"
                   style={{
                     zIndex: on ? 20 : 1,
                     left: `calc(50% + ${s.px - 130}px)`,
@@ -147,30 +122,43 @@ export function Projects() {
                   viewport={{ once: true, margin: "-120px" }}
                   transition={{ ...ENTER, delay: 0.05 + i * 0.06 }}
                 >
+                  {/* The link is a flat, fixed hit area exactly over the slot, so the card
+                      under the pointer is always the one that lights up. All motion lives
+                      on the visual inside it, which ignores the pointer. */}
                   <MotionLink
                     href={`/projects/${proj.slug}`}
                     onPointerEnter={() => setActive(i)}
                     onFocus={() => setActive(i)}
                     aria-label={`${proj.title}: view case study`}
-                    className="block h-full w-full rounded-2xl outline-offset-4"
-                    animate={{
-                      rotateY: on || reduce ? 0 : s.ry,
-                      rotateX: on || reduce ? 0 : s.rx,
-                      // focus pulls forward; the rest step back instead of looking disabled
-                      scale: on ? 1.1 : dim ? 0.96 : 1,
-                      z: on && !reduce ? 40 : 0,
-                      opacity: dim ? 0.5 : 1,
-                      filter: dim ? "saturate(0.35) brightness(0.8)" : "saturate(1) brightness(1)",
-                    }}
-                    whileTap={reduce ? undefined : { scale: on ? 1.06 : 0.97 }}
+                    className="block h-full w-full rounded-2xl outline-offset-4 [perspective:900px]"
+                    whileTap={reduce ? undefined : { scale: 0.97 }}
                     transition={SPRING}
                   >
-                    <WorkCard p={proj} index={i} className="h-full w-full" />
+                    <motion.div
+                      className="pointer-events-none h-full w-full rounded-2xl"
+                      initial={false}
+                      animate={{
+                        rotateY: on || reduce ? 0 : s.ry,
+                        rotateX: on || reduce ? 0 : s.rx,
+                        scale: on && !reduce ? 1.08 : dim && !reduce ? 0.96 : 1,
+                        opacity: dim ? 0.45 : 1,
+                        filter: dim ? "saturate(0.35) brightness(0.8)" : "saturate(1) brightness(1)",
+                        // a faint white glow on every card; a little more on the one in focus
+                        boxShadow: on
+                          ? "0 0 0 1px rgba(255,255,255,.35), 0 0 36px 2px rgba(255,255,255,.16)"
+                          : dim
+                            ? "0 0 0 1px rgba(255,255,255,.05), 0 0 18px 0px rgba(255,255,255,.03)"
+                            : "0 0 0 1px rgba(255,255,255,.12), 0 0 22px 0px rgba(255,255,255,.07)",
+                      }}
+                      transition={SPRING}
+                    >
+                      <WorkCard p={proj} index={i} className="h-full w-full" />
+                    </motion.div>
                   </MotionLink>
                 </motion.div>
               );
             })}
-          </motion.div>
+          </div>
 
           {/* centre: the title, or the focused project (cross-fade, never a blank frame) */}
           <div className="pointer-events-none absolute left-1/2 top-1/2 h-[200px] w-[380px] -translate-x-1/2 -translate-y-1/2">
