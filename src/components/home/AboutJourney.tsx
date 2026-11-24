@@ -223,6 +223,8 @@ function IntroCopy() {
         <Magnetic>
           <a
             href={site.links.resume}
+            target="_blank"
+            rel="noreferrer"
             className="inline-flex h-11 items-center gap-2 rounded-full border border-white/30 px-5 text-sm transition-[background-color,transform] hover:bg-white/10 active:scale-[0.97]"
           >
             View resume

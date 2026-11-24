@@ -84,7 +84,7 @@ export function Contact() {
               <a href={site.links.github} target="_blank" rel="noreferrer" className={pill}>
                 <GithubIcon /> GitHub
               </a>
-              <a href={site.links.resume} className={pill}>
+              <a href={site.links.resume} target="_blank" rel="noreferrer" className={pill}>
                 <FileText className="size-4" /> Resume
               </a>
               <Magnetic>

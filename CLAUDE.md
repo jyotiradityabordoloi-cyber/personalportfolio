@@ -7,6 +7,7 @@ Personal product portfolio of Jyotiraditya Bordoloi. Next.js 16 (App Router) + T
 - **Content is data, not markup.** Edit text in `src/content/` (`site.ts`, `projects.ts`, `teardowns.ts`, `analytics.ts`), not in components.
 - Home page sections, in order: `src/app/page.tsx` → Hero, AboutJourney (pinned scroll sequence), Identity (pinned → Toolkit), Experience (journey timeline), Projects (Works '26 ring), Teardowns, Analytics, Contact.
 - Case pages: `src/app/projects/[slug]/page.tsx`, `src/app/teardowns/[slug]/page.tsx`, `src/app/analytics/[slug]/page.tsx`.
+- Resume: `public/Jyotiraditya_Bordoloi_Resume.pdf` (replace the file to update it; `/resume` forwards there).
 - Project thumbnails: `public/images/projects/`. Tool logos: `public/icons/` (real brand SVGs; never draw look-alikes).
 - Animation plans: `plans/`.
 

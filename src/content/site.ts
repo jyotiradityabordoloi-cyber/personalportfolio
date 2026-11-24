@@ -28,7 +28,7 @@ export const site = {
   links: {
     github: "https://github.com/jyotiradityabordoloi-cyber",
     linkedin: "https://www.linkedin.com/in/jyotiraditya-bordoloi-721879237/",
-    resume: "/resume",
+    resume: "/Jyotiraditya_Bordoloi_Resume.pdf",
   },
   interests: ["AI products", "SaaS", "FinTech", "Consumer tech", "Product strategy"],
 };
